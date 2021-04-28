@@ -1,3 +1,4 @@
+//#include <TouchScreen.h>
 #include <Adafruit_HX8357.h>
 #include <Adafruit_ILI9341.h>
 #include <SPI.h>
@@ -12,17 +13,14 @@
 #define TFT_CS 10
 #define TFT_RST 8
 
-#define LTBLUE    0xB6DF
-#define LTTEAL    0xBF5F
-#define LTGREEN   0xBFF7
-#define LTCYAN    0xC7FF
-#define LTRED     0xFD34
-#define LTMAGENTA 0xFD5F
-#define LTYELLOW  0xFFF8
-#define LTORANGE  0xFE73
-#define LTPINK    0xFDDF
-#define LTPURPLE  0xCCFF
-#define LTGREY    0xE71C
+//#define YP A1
+//#define XM A2
+//#define YM 7
+//#define XP 6
+//#define TS_MINX 940
+//#define TS_MINY 160
+//#define TS_MAXX 160
+//#define TS_MAXY 970
 
 #define BLUE      0x001F
 #define TEAL      0x0438
@@ -38,55 +36,87 @@
 #define WHITE     0xFFFF
 #define BLACK     0x0000
 
-#define DKBLUE    0x000D
-#define DKTEAL    0x020C
-#define DKGREEN   0x03E0
-#define DKCYAN    0x03EF
-#define DKRED     0x6000
-#define DKMAGENTA 0x8008
-#define DKYELLOW  0x8400
-#define DKORANGE  0x8200
-#define DKPINK    0x9009
-#define DKPURPLE  0x4010
-#define DKGREY    0x4A49
 
-boolean graph1 = true;
-boolean graph2 = true;
-boolean graph3 = true;
-boolean graph4 = true;
-boolean graph5 = true;
-boolean graph6 = true;
-boolean graph7 = true;
+//boolean graph1 = true;
+//boolean graph2 = true;
+//boolean graph3 = true;
+//boolean graph4 = true;
+//boolean graph5 = true;
+//boolean graph6 = true;
+//boolean graph7 = true;
 
-
+//TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 
+//#define BOXSIZE 40
+//#define PENRADIUS 3
+//
+//#define MINPRESSURE 10
+//#define MAXPRESSURE 1000
+
 int offset = 0;
+bool change = 0;
+bool touch = 0;
 
 void setup() {
 
-  pinMode(TFT_CS, OUTPUT);
-  pinMode(7, OUTPUT);
-  digitalWrite(TFT_CS, HIGH);
-  digitalWrite(7, HIGH);
+// pinMode(5, OUTPUT);
+//  digitalWrite(5, LOW);
+//  Serial.begin(9600);
 
+  
   tft.begin();
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setTextColor(ILI9341_YELLOW);
+  tft.setTextColor(WHITE);
   tft.setTextSize(2);
-  tft.setRotation(1);
+  tft.fillScreen(BLACK);
+  
+  tft.fillRect(0,0,120,120, GREEN);
+  tft.fillRect(120,0,120,120, RED);
+  
+  tft.setCursor(8,45);
+  tft.println("LED ON");
+  
+  tft.setCursor(128,45);
+  tft.println("LED OFF");
+  
   
 }
 
 void loop() {
+  delay(1000);
+  /*if (change == 0 && touch == 0) {
+    digitalWrite(A5, LOW);
+    tft.fillCircle(120, 160, 50, RED);
+    tft.setCursor(95, 150);
+    tft.println("LED");
+    change = 1;
+    delay(200);
+  }
 
-  int volt = analogRead(A0);
-  double voltage = map(volt, 0, 1023, 0, 2500) + offset;
+  if (change == 0 && touch == 1) {
+    digitalWrite(A5, HIGH);
+    tft.fillCircle(120, 160, 50, GREEN);
+    tft.setCursor(95, 150);
+    tft.println("LED");
+    change = 1;
+    delay(200);
+  }
 
-  voltage /= 100;
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setCursor(0, 0);
-        tft.print(voltage);
-
-        delay(1000);
+  TSPoint p = ts.getPoint();
+  pinMode(XM, OUTPUT);
+  pinMode(YP, OUTPUT);
+  if (p.z > MINPRESSURE && p.z < MAXPRESSURE) {
+    p.x = map(p.x, TS_MINX, TS_MAXX, tft.width(), 0);
+    p.y = map(p.y, TS_MINY, TS_MAXY, tft.height(), 0);
+    Serial.print("("); Serial.print(p.x);
+    Serial.print(", "); Serial.print(p.y);
+    Serial.println(")");
+    if (p.x > 70 && p.x < 170) {
+      if (p.y > 110 && p.y < 210) {
+        change = 0;
+        touch = !touch;
+      }
+    }
+  }*/
+        
 }
