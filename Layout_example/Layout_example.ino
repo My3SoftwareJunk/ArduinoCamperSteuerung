@@ -1,4 +1,4 @@
-//#include <TouchScreen.h>
+#include <TouchScreen.h>
 #include <Adafruit_HX8357.h>
 #include <Adafruit_ILI9341.h>
 #include <SPI.h>
@@ -13,14 +13,14 @@
 #define TFT_CS 10
 #define TFT_RST 8
 
-//#define YP A1
-//#define XM A2
-//#define YM 7
-//#define XP 6
-//#define TS_MINX 940
-//#define TS_MINY 160
-//#define TS_MAXX 160
-//#define TS_MAXY 970
+#define YP A1
+#define XM A2
+#define YM 7
+#define XP 6
+#define TS_MINX 940
+#define TS_MINY 160
+#define TS_MAXX 160
+#define TS_MAXY 970
 
 #define BLUE      0x001F
 #define TEAL      0x0438
@@ -45,14 +45,14 @@
 //boolean graph6 = true;
 //boolean graph7 = true;
 
-//TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 
-//#define BOXSIZE 40
-//#define PENRADIUS 3
-//
-//#define MINPRESSURE 10
-//#define MAXPRESSURE 1000
+#define BOXSIZE 40
+#define PENRADIUS 3
+
+#define MINPRESSURE 10
+#define MAXPRESSURE 1000
 
 int offset = 0;
 bool change = 0;
@@ -60,10 +60,14 @@ bool touch = 0;
 
 void setup() {
 
-// pinMode(5, OUTPUT);
-//  digitalWrite(5, LOW);
-//  Serial.begin(9600);
+ pinMode(5, OUTPUT);
+  digitalWrite(5, LOW);
+  Serial.begin(9600);
 
+  pinMode(TFT_CS, OUTPUT);
+  pinMode(7, OUTPUT);
+  digitalWrite(TFT_CS, HIGH);
+  digitalWrite(7, HIGH);
   
   tft.begin();
   tft.setTextColor(WHITE);
@@ -83,8 +87,8 @@ void setup() {
 }
 
 void loop() {
-  delay(1000);
-  /*if (change == 0 && touch == 0) {
+  
+  if (change == 0 && touch == 0) {
     digitalWrite(A5, LOW);
     tft.fillCircle(120, 160, 50, RED);
     tft.setCursor(95, 150);
@@ -117,6 +121,6 @@ void loop() {
         touch = !touch;
       }
     }
-  }*/
+  }
         
 }
